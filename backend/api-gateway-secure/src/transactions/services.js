@@ -9,32 +9,27 @@ module.exports={
             return await ServiceSupport.listTransactionsUser(payload);
     },
     async saveTransactions(payload){
-        const isEmailExist = await UtilSupport.existsUser({ email: payload.body.email });
+        const isEmailExist = await UtilSupport.existsUserId({ user_id: payload.body.user_id });
         
         new CustomException(
               ErrorConstant.ERROR_EXIST_EMAIL.code,
               ErrorConstant.ERROR_EXIST_EMAIL.message,
               'the user has already been registered.',
               HttpConstant.INTERNAL_SERVER_ERROR_STATUS.code,
-           ).throw(isEmailExist.rows && isEmailExist.rows.length > 0);
+           ).throw(isEmailExist.rows && isEmailExist.rows.length === 0);
         
-        if (payload.body.type == "withdrawal"){
-            // const isSufficientBalance = await UtilSupport.handleBalance(payload);
-            // // 
-            // new CustomException(
-            //       ErrorConstant.ERROR_NOT_BALANCE.code,
-            //       ErrorConstant.ERROR_NOT_BALANCE.message,
-            //       'you do not have enough balance.',
-            //       HttpConstant.INTERNAL_SERVER_ERROR_STATUS.code,
-            //    ).throw(isSufficientBalance);
-             
+        if (payload.body.type === "withdrawal"){
+            
+            const dataBalance = await UtilSupport.handleBalance(payload);
+            const {amount} = payload.body;
+            const balance = dataBalance.rows[0].balance;
             new CustomException(
-                  ErrorConstant.ERROR_NOT_BALANCE.code,
-                  ErrorConstant.ERROR_NOT_BALANCE.message,
-                  'In Progress.',
-                  HttpConstant.INTERNAL_SERVER_ERROR_STATUS.code,
-               ).throw(false);
-
+                ErrorConstant.ERROR_NOT_BALANCE.code,
+                ErrorConstant.ERROR_NOT_BALANCE.message,
+                'you do not have enough balance.',
+                HttpConstant.INTERNAL_SERVER_ERROR_STATUS.code,
+               ).throw(balance < amount);
+             
         }
         
         return await ServiceSupport.saveTransactions(payload);

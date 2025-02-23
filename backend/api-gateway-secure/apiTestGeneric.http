@@ -5,8 +5,8 @@ POST {{url_base}}/users
 Content-Type: application/json
 
 {
-  "name": "For Due Don",
-  "email": "agui@fort.com"
+  "name": "Leonen",
+  "email": "agui@leonen.com"
 }
 
 ### List Users
@@ -18,12 +18,12 @@ POST {{url_base}}/transactions
 Content-Type: application/json
 
 {
-  "user_id": 2,
-  "amount": 500.50,
-  "type": "deposit"
+  "user_id": 10,
+  "amount": 1000.00,
+  "type": "withdrawal"
 }
 
 ###List transactions for user
-GET {{url_base}}/transactions/2
+GET {{url_base}}/transactions/10
 Content-Type: application/json
 

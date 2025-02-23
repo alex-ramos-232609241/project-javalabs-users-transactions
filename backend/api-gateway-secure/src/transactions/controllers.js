@@ -2,7 +2,7 @@ const Service = require('./services');
 const CommonsService = require('../commons/service');
 const ErrorConstant = require('./supports/error.constant');
 const CustomException = require('./supports/custom.exception');
-
+const Validation = require('./validations');
 let HttpConstant = CommonsService.httpConstant();
 module.exports={
     async listTransactionsUser(payload){
@@ -19,6 +19,7 @@ module.exports={
     },
 async saveTransactions(payload){
         try {
+            await Validation.validationSaveTransactions(payload.body);
             return await Service.saveTransactions(payload);
         } catch (error) {
             return new CustomException(

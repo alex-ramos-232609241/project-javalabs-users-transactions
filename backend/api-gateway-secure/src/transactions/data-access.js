@@ -1,7 +1,8 @@
 const {
     LIST_TRANSACTIONS,
     SAVE_TRANSACTIONS,
-    EXISTS_USER_EMAIL
+    EXISTS_USER_EMAIL,
+    BALANCE_TRANSACTIONS
 } = require('./supports/database.constant');
 const { executeQueryPOSTGRESQL, addNameTable } = require('../commons/service');
 module.exports={
@@ -50,22 +51,24 @@ async saveTransactions(payload){
             saveTransaction: response.rows[0]
          };
     },
-    async existsUser(payload){
+    async existsUserId(payload){
         const {
-            email
+            user_id
         } = payload;
         return await executeQueryPOSTGRESQL({
             statement: EXISTS_USER_EMAIL,
             values:{
-               email
+               user_id
             }
         }, 'POSTGRESQL');
     },
     async handleBalance(payload){
         // continue...
+        const {user_id} = payload.body;
         return await executeQueryPOSTGRESQL({
-            statement: '',
+            statement: BALANCE_TRANSACTIONS,
             values:{
+                user_id
             }
         }, 'POSTGRESQL');
     },
