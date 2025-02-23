@@ -1,0 +1,29 @@
+@url_base=http://localhost:5000 
+
+### Save User
+POST {{url_base}}/users
+Content-Type: application/json
+
+{
+  "name": "For Due Don",
+  "email": "agui@fort.com"
+}
+
+### List Users
+GET {{url_base}}/users
+Content-Type: application/json
+
+### Save Transactions
+POST {{url_base}}/transactions
+Content-Type: application/json
+
+{
+  "user_id": 2,
+  "amount": 500.50,
+  "type": "deposit"
+}
+
+###List transactions for user
+GET {{url_base}}/transactions/2
+Content-Type: application/json
+

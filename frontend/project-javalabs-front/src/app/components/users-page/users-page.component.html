@@ -1,0 +1,39 @@
+<div class="users-page">
+  <div class="form-container">
+    <h2>Agregar Usuario</h2>
+    <form (ngSubmit)="addUser()">
+      <label for="name">Nombre:</label>
+      <input id="name" [(ngModel)]="newUser.name" name="name" required>
+
+      <label for="email">Email:</label>
+      <input id="email" [(ngModel)]="newUser.email" name="email" required>
+
+      <button type="submit">Agregar</button>
+    </form>
+  </div>
+
+  <div class="list-container">
+    <h2>Lista de Usuarios</h2>
+    <ul>
+      <li *ngFor="let user of users">
+        <p><strong>Nombre:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Fecha de creación:</strong> {{ user.created_at }}</p>
+        <!-- Botón para mostrar transacciones -->
+        <button (click)="loadTransactions(user.id!)">Ver Transacciones</button>
+
+        <div *ngIf="user.transactions">
+          <p><strong>Cantidad de transacciones:</strong> {{ user.transactions.amountOfTransactions! }}</p>
+          <ul>
+            <li *ngFor="let transaction of user.transactions.listOfTransactions">
+              <p><strong>ID:</strong> {{ transaction.id }}</p>
+              <p><strong>Monto:</strong> {{ transaction.amount }}</p>
+              <p><strong>Tipo:</strong> {{ transaction.type }}</p>
+              <p><strong>Fecha:</strong> {{ transaction.created_at | date: 'medium' }}</p>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
